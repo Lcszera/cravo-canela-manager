@@ -19,8 +19,7 @@ public class DatabaseInitializer {
                 quantidade INTEGER NOT NULL,
                 prateleira INTEGER NOT NULL,
                 coluna INTEGER NOT NULL,
-                palavras_chave TEXT,
-                observacoes TEXT
+                palavras_chave TEXT
             );
             """;
 

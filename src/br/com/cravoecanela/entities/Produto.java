@@ -9,17 +9,22 @@ public class Produto {
     private TipoProduto tipo;
     private Double valor;
     private Integer quantidade;
+    private Integer estoqueMinimo;
     private Integer prateleira;
     private Integer coluna;
     private String palavrasChave;
 
-    public Produto(Integer id, String nome, String descricao, TipoProduto tipo, Double valor, Integer quantidade, Integer prateleira, Integer coluna, String palavrasChave) {
+    public Produto() {
+    }
+
+    public Produto(Integer id, String nome, String descricao, TipoProduto tipo, Double valor, Integer quantidade, Integer estoqueMinimo, Integer prateleira, Integer coluna, String palavrasChave) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
         this.tipo = tipo;
         this.valor = valor;
         this.quantidade = quantidade;
+        this.estoqueMinimo = estoqueMinimo;
         this.prateleira = prateleira;
         this.coluna = coluna;
         this.palavrasChave = palavrasChave;
@@ -47,6 +52,10 @@ public class Produto {
 
     public Integer getQuantidade() {
         return quantidade;
+    }
+
+    public Integer getEstoqueMinimo() {
+        return estoqueMinimo;
     }
 
     public Integer getPrateleira() {
@@ -85,6 +94,10 @@ public class Produto {
         this.quantidade = quantidade;
     }
 
+    public void setEstoqueMinimo(Integer estoqueMinimo) {
+        this.estoqueMinimo = estoqueMinimo;
+    }
+
     public void setPrateleira(Integer prateleira) {
         this.prateleira = prateleira;
     }
@@ -99,7 +112,7 @@ public class Produto {
 
     @Override
     public String toString() {
-        return "Produto{}";
+        return nome;
     }
 
 }
