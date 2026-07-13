@@ -10,18 +10,19 @@ public class DatabaseInitializer {
     }
 
     private static final String CREATE_TABLE_PRODUTOS = """
-            CREATE TABLE IF NOT EXISTS produtos (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                nome TEXT NOT NULL,
-                descricao TEXT,
-                tipo TEXT NOT NULL,
-                valor REAL NOT NULL,
-                quantidade INTEGER NOT NULL,
-                prateleira INTEGER NOT NULL,
-                coluna INTEGER NOT NULL,
-                palavras_chave TEXT
-            );
-            """;
+        CREATE TABLE IF NOT EXISTS produtos (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            nome TEXT NOT NULL,
+            descricao TEXT,
+            tipo TEXT NOT NULL,
+            valor REAL NOT NULL,
+            quantidade INTEGER NOT NULL,
+            estoque_minimo INTEGER DEFAULT 5,
+            prateleira INTEGER NOT NULL,
+            coluna INTEGER NOT NULL,
+            palavras_chave TEXT
+        );
+        """;
 
     private static final String CREATE_TABLE_VENDAS = """
             CREATE TABLE IF NOT EXISTS vendas (
@@ -36,10 +37,14 @@ public class DatabaseInitializer {
 
     public static void initializeDatabase() {
 
+
         try (
                 Connection conn = ConnectionFactory.getConnection();
                 Statement stmt = conn.createStatement()
         ) {
+
+            stmt.execute("DROP TABLE IF EXISTS vendas");
+            stmt.execute("DROP TABLE IF EXISTS produtos");
 
             stmt.execute(CREATE_TABLE_PRODUTOS);
             stmt.execute(CREATE_TABLE_VENDAS);
