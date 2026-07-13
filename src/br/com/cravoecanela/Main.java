@@ -43,6 +43,12 @@ public class Main {
 
         }
 
+        Produto encontrado = dao.buscarPorId(1);
+
+        if (encontrado != null) {
+            System.out.println("Produto encontrado: " + encontrado.getNome());
+        }
+
     }
 
 }
