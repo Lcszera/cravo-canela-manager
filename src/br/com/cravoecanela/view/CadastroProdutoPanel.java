@@ -4,6 +4,7 @@ import br.com.cravoecanela.dao.ProdutoDAO;
 import br.com.cravoecanela.entities.Produto;
 import br.com.cravoecanela.enums.TipoProduto;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
 public class CadastroProdutoPanel extends JPanel {
@@ -17,6 +18,8 @@ public class CadastroProdutoPanel extends JPanel {
     private JTextField txtPrateleira;
     private JTextField txtColuna;
     private JTextField txtPalavrasChave;
+    private JTable tabelaProdutos;
+    private DefaultTableModel modeloTabela;
 
     private JButton btnSalvar;
 
@@ -61,6 +64,21 @@ public class CadastroProdutoPanel extends JPanel {
 
         add(formulario, BorderLayout.NORTH);
 
+        modeloTabela = new DefaultTableModel();
+
+        modeloTabela.addColumn("ID");
+        modeloTabela.addColumn("Nome");
+        modeloTabela.addColumn("Tipo");
+        modeloTabela.addColumn("Quantidade");
+        modeloTabela.addColumn("Prateleira");
+        modeloTabela.addColumn("Coluna");
+
+        tabelaProdutos = new JTable(modeloTabela);
+
+        JScrollPane scroll = new JScrollPane(tabelaProdutos);
+
+        add(scroll, BorderLayout.CENTER);
+
         btnSalvar.addActionListener(e -> salvarProduto());
 
     }
@@ -102,6 +120,8 @@ public class CadastroProdutoPanel extends JPanel {
 
             dao.salvar(produto);
 
+            carregarProdutos();
+
             JOptionPane.showMessageDialog(this,
                     "Produto cadastrado com sucesso!");
 
@@ -113,6 +133,31 @@ public class CadastroProdutoPanel extends JPanel {
             e.printStackTrace();
 
         }
+
+    }
+
+    private void carregarProdutos() {
+
+        modeloTabela.setRowCount(0);
+
+        ProdutoDAO dao = new ProdutoDAO();
+
+        for (Produto p : dao.listarTodos()) {
+
+            modeloTabela.addRow(new Object[]{
+
+                    p.getId(),
+                    p.getNome(),
+                    p.getTipo(),
+                    p.getQuantidade(),
+                    p.getPrateleira(),
+                    p.getColuna()
+
+            });
+
+        }
+
+        carregarProdutos();
 
     }
 
