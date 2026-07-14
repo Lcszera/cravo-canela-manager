@@ -20,6 +20,8 @@ public class CadastroProdutoPanel extends JPanel {
     private JTextField txtPalavrasChave;
     private JTable tabelaProdutos;
     private DefaultTableModel modeloTabela;
+    private JTextField txtPesquisar;
+    private JButton btnPesquisar;
 
     private JButton btnSalvar;
 
@@ -45,6 +47,8 @@ public class CadastroProdutoPanel extends JPanel {
         txtPalavrasChave = new JTextField();
 
         btnSalvar = new JButton("Salvar Produto");
+        txtPesquisar = new JTextField(20);
+        btnPesquisar = new JButton("Pesquisar");
 
         adicionarCampo(formulario, gbc,0,"Nome:",txtNome);
         adicionarCampo(formulario, gbc,1,"Descrição:",txtDescricao);
@@ -77,9 +81,18 @@ public class CadastroProdutoPanel extends JPanel {
 
         JScrollPane scroll = new JScrollPane(tabelaProdutos);
 
+        JPanel painelPesquisa = new JPanel(new FlowLayout(FlowLayout.LEFT));
+
+        painelPesquisa.add(new JLabel("Pesquisar:"));
+        painelPesquisa.add(txtPesquisar);
+        painelPesquisa.add(btnPesquisar);
+
+        add(painelPesquisa, BorderLayout.SOUTH);
+
         add(scroll, BorderLayout.CENTER);
 
         btnSalvar.addActionListener(e -> salvarProduto());
+        btnPesquisar.addActionListener(e -> pesquisarProduto());
 
     }
 
@@ -163,6 +176,38 @@ public class CadastroProdutoPanel extends JPanel {
         ProdutoDAO dao = new ProdutoDAO();
 
         for (Produto p : dao.listarTodos()) {
+
+            modeloTabela.addRow(new Object[]{
+
+                    p.getId(),
+                    p.getNome(),
+                    p.getTipo(),
+                    p.getQuantidade(),
+                    p.getPrateleira(),
+                    p.getColuna()
+
+            });
+
+        }
+
+    }
+
+    private void pesquisarProduto() {
+
+        String filtro = txtPesquisar.getText().trim();
+
+        modeloTabela.setRowCount(0);
+
+        ProdutoDAO dao = new ProdutoDAO();
+
+        if (filtro.isEmpty()) {
+
+            carregarProdutos();
+            return;
+
+        }
+
+        for (Produto p : dao.pesquisar(filtro)) {
 
             modeloTabela.addRow(new Object[]{
 

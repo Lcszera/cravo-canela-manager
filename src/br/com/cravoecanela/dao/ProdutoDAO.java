@@ -3,6 +3,8 @@ package br.com.cravoecanela.dao;
 import br.com.cravoecanela.config.ConnectionFactory;
 import br.com.cravoecanela.entities.Produto;
 import br.com.cravoecanela.enums.TipoProduto;
+
+import javax.swing.*;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
