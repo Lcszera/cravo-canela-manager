@@ -109,7 +109,8 @@ public class CadastroProdutoPanel extends JPanel {
             produto.setNome(txtNome.getText());
             produto.setDescricao(txtDescricao.getText());
             produto.setTipo((TipoProduto) cbTipo.getSelectedItem());
-            produto.setValor(Double.parseDouble(txtValor.getText()));
+            String valor = txtValor.getText().replace(",", ".");
+            produto.setValor(Double.parseDouble(valor));
             produto.setQuantidade(Integer.parseInt(txtQuantidade.getText()));
             produto.setEstoqueMinimo(Integer.parseInt(txtEstoqueMinimo.getText()));
             produto.setPrateleira(Integer.parseInt(txtPrateleira.getText()));
@@ -125,6 +126,8 @@ public class CadastroProdutoPanel extends JPanel {
             JOptionPane.showMessageDialog(this,
                     "Produto cadastrado com sucesso!");
 
+            limparCampos();
+
         } catch (Exception e) {
 
             JOptionPane.showMessageDialog(this,
@@ -133,6 +136,23 @@ public class CadastroProdutoPanel extends JPanel {
             e.printStackTrace();
 
         }
+
+    }
+
+    private void limparCampos() {
+
+        txtNome.setText("");
+        txtDescricao.setText("");
+        txtValor.setText("");
+        txtQuantidade.setText("");
+        txtEstoqueMinimo.setText("");
+        txtPrateleira.setText("");
+        txtColuna.setText("");
+        txtPalavrasChave.setText("");
+
+        cbTipo.setSelectedIndex(0);
+
+        txtNome.requestFocus();
 
     }
 
@@ -156,8 +176,6 @@ public class CadastroProdutoPanel extends JPanel {
             });
 
         }
-
-        carregarProdutos();
 
     }
 

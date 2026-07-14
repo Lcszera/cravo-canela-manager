@@ -43,9 +43,6 @@ public class DatabaseInitializer {
                 Statement stmt = conn.createStatement()
         ) {
 
-            stmt.execute("DROP TABLE IF EXISTS vendas");
-            stmt.execute("DROP TABLE IF EXISTS produtos");
-
             stmt.execute(CREATE_TABLE_PRODUTOS);
             stmt.execute(CREATE_TABLE_VENDAS);
 
