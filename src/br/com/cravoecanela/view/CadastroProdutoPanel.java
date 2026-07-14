@@ -1,7 +1,8 @@
 package br.com.cravoecanela.view;
 
+import br.com.cravoecanela.dao.ProdutoDAO;
+import br.com.cravoecanela.entities.Produto;
 import br.com.cravoecanela.enums.TipoProduto;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -52,12 +53,15 @@ public class CadastroProdutoPanel extends JPanel {
         adicionarCampo(formulario, gbc,7,"Coluna:",txtColuna);
         adicionarCampo(formulario, gbc,8,"Palavras-chave:",txtPalavrasChave);
 
+
         gbc.gridx = 1;
         gbc.gridy = 9;
 
         formulario.add(btnSalvar, gbc);
 
         add(formulario, BorderLayout.NORTH);
+
+        btnSalvar.addActionListener(e -> salvarProduto());
 
     }
 
@@ -75,6 +79,40 @@ public class CadastroProdutoPanel extends JPanel {
         gbc.gridx = 1;
 
         panel.add(componente, gbc);
+
+    }
+
+    private void salvarProduto() {
+
+        try {
+
+            Produto produto = new Produto();
+
+            produto.setNome(txtNome.getText());
+            produto.setDescricao(txtDescricao.getText());
+            produto.setTipo((TipoProduto) cbTipo.getSelectedItem());
+            produto.setValor(Double.parseDouble(txtValor.getText()));
+            produto.setQuantidade(Integer.parseInt(txtQuantidade.getText()));
+            produto.setEstoqueMinimo(Integer.parseInt(txtEstoqueMinimo.getText()));
+            produto.setPrateleira(Integer.parseInt(txtPrateleira.getText()));
+            produto.setColuna(Integer.parseInt(txtColuna.getText()));
+            produto.setPalavrasChave(txtPalavrasChave.getText());
+
+            ProdutoDAO dao = new ProdutoDAO();
+
+            dao.salvar(produto);
+
+            JOptionPane.showMessageDialog(this,
+                    "Produto cadastrado com sucesso!");
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao cadastrar produto.");
+
+            e.printStackTrace();
+
+        }
 
     }
 
