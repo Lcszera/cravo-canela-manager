@@ -107,8 +107,6 @@ public class ProdutoDAO {
 
             stmt.executeUpdate();
 
-            System.out.println("Produto excluído com sucesso!");
-
         } catch (SQLException e) {
 
             throw new RuntimeException("Erro ao excluir produto.", e);

@@ -22,8 +22,10 @@ public class CadastroProdutoPanel extends JPanel {
     private DefaultTableModel modeloTabela;
     private JTextField txtPesquisar;
     private JButton btnPesquisar;
-
+    private Integer idProdutoSelecionado;
     private JButton btnSalvar;
+    private JButton btnAtualizar;
+    private JButton btnExcluir;
 
     public CadastroProdutoPanel() {
 
@@ -49,6 +51,8 @@ public class CadastroProdutoPanel extends JPanel {
         btnSalvar = new JButton("Salvar Produto");
         txtPesquisar = new JTextField(20);
         btnPesquisar = new JButton("Pesquisar");
+        btnAtualizar = new JButton("Atualizar");
+        btnExcluir = new JButton("Excluir");
 
         adicionarCampo(formulario, gbc,0,"Nome:",txtNome);
         adicionarCampo(formulario, gbc,1,"Descrição:",txtDescricao);
@@ -87,12 +91,26 @@ public class CadastroProdutoPanel extends JPanel {
         painelPesquisa.add(txtPesquisar);
         painelPesquisa.add(btnPesquisar);
 
+        JPanel painelBotoes = new JPanel();
+
+        painelBotoes.add(btnSalvar);
+        painelBotoes.add(btnAtualizar);
+        painelBotoes.add(btnExcluir);
+
+        formulario.add(painelBotoes, gbc);
+
+        tabelaProdutos.getSelectionModel().addListSelectionListener(e -> preencherFormulario());
+
         add(painelPesquisa, BorderLayout.SOUTH);
 
         add(scroll, BorderLayout.CENTER);
 
         btnSalvar.addActionListener(e -> salvarProduto());
         btnPesquisar.addActionListener(e -> pesquisarProduto());
+
+        btnSalvar.addActionListener(e -> salvarProduto());
+        btnPesquisar.addActionListener(e -> pesquisarProduto());
+        btnExcluir.addActionListener(e -> excluirProduto());
 
     }
 
@@ -223,5 +241,68 @@ public class CadastroProdutoPanel extends JPanel {
         }
 
     }
+
+    private void preencherFormulario() {
+
+        int linha = tabelaProdutos.getSelectedRow();
+
+        if (linha == -1) {
+            return;
+        }
+
+        idProdutoSelecionado = (Integer) modeloTabela.getValueAt(linha, 0);
+
+        ProdutoDAO dao = new ProdutoDAO();
+
+        Produto produto = dao.buscarPorId(idProdutoSelecionado);
+
+        txtNome.setText(produto.getNome());
+        txtDescricao.setText(produto.getDescricao());
+        cbTipo.setSelectedItem(produto.getTipo());
+        txtValor.setText(String.valueOf(produto.getValor()));
+        txtQuantidade.setText(String.valueOf(produto.getQuantidade()));
+        txtEstoqueMinimo.setText(String.valueOf(produto.getEstoqueMinimo()));
+        txtPrateleira.setText(String.valueOf(produto.getPrateleira()));
+        txtColuna.setText(String.valueOf(produto.getColuna()));
+        txtPalavrasChave.setText(produto.getPalavrasChave());
+
+    }
+
+    private void excluirProduto() {
+
+        if (idProdutoSelecionado == null) {
+
+            JOptionPane.showMessageDialog(this,
+                    "Selecione um produto na tabela.");
+
+            return;
+        }
+
+        int resposta = JOptionPane.showConfirmDialog(
+                this,
+                "Deseja realmente excluir este produto?",
+                "Confirmação",
+                JOptionPane.YES_NO_OPTION
+        );
+
+        if (resposta == JOptionPane.YES_OPTION) {
+
+            ProdutoDAO dao = new ProdutoDAO();
+
+            dao.excluir(idProdutoSelecionado);
+
+            carregarProdutos();
+
+            limparCampos();
+
+            idProdutoSelecionado = null;
+
+            JOptionPane.showMessageDialog(this,
+                    "Produto excluído com sucesso!");
+
+        }
+
+    }
+
 
 }
