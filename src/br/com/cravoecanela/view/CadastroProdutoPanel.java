@@ -29,9 +29,35 @@ public class CadastroProdutoPanel extends JPanel {
 
     public CadastroProdutoPanel() {
 
+        setBackground(new Color(245, 239, 230));
+
         setLayout(new BorderLayout());
 
+        JLabel titulo = new JLabel("CRAVO E CANELA MANAGER");
+
+        titulo.setHorizontalAlignment(SwingConstants.CENTER);
+        titulo.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        titulo.setForeground(new Color(46, 125, 50));
+
+        JPanel topo = new JPanel(new BorderLayout());
+
+        topo.setBackground(getBackground());
+
         JPanel formulario = new JPanel(new GridBagLayout());
+
+        formulario.setBackground(Color.WHITE);
+
+        formulario.setBorder(
+                BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(180,180,180)),
+                        BorderFactory.createEmptyBorder(20,20,20,20)
+                )
+        );
+
+        topo.add(titulo, BorderLayout.NORTH);
+        topo.add(formulario, BorderLayout.CENTER);
+
+        add(topo, BorderLayout.NORTH);
 
         GridBagConstraints gbc = new GridBagConstraints();
 
@@ -53,6 +79,18 @@ public class CadastroProdutoPanel extends JPanel {
         btnPesquisar = new JButton("Pesquisar");
         btnAtualizar = new JButton("Atualizar");
         btnExcluir = new JButton("Excluir");
+
+        btnSalvar.setBackground(new Color(46,125,50));
+        btnSalvar.setForeground(Color.WHITE);
+
+        btnAtualizar.setBackground(new Color(255,152,0));
+        btnAtualizar.setForeground(Color.WHITE);
+
+        btnExcluir.setBackground(new Color(211,47,47));
+        btnExcluir.setForeground(Color.WHITE);
+
+        btnPesquisar.setBackground(new Color(33,150,243));
+        btnPesquisar.setForeground(Color.WHITE);
 
         adicionarCampo(formulario, gbc,0,"Nome:",txtNome);
         adicionarCampo(formulario, gbc,1,"Descrição:",txtDescricao);
@@ -124,7 +162,10 @@ public class CadastroProdutoPanel extends JPanel {
         gbc.gridx = 0;
         gbc.gridy = linha;
 
-        panel.add(new JLabel(texto), gbc);
+        JLabel label = new JLabel(texto);
+        label.setFont(new Font("Segoe UI", Font.BOLD, 14));
+
+        panel.add(label, gbc);
 
         gbc.gridx = 1;
 
