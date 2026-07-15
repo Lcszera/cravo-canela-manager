@@ -110,6 +110,7 @@ public class CadastroProdutoPanel extends JPanel {
 
         btnSalvar.addActionListener(e -> salvarProduto());
         btnPesquisar.addActionListener(e -> pesquisarProduto());
+        btnAtualizar.addActionListener(e -> atualizarProduto());
         btnExcluir.addActionListener(e -> excluirProduto());
 
     }
@@ -163,6 +164,60 @@ public class CadastroProdutoPanel extends JPanel {
 
             JOptionPane.showMessageDialog(this,
                     "Erro ao cadastrar produto.");
+
+            e.printStackTrace();
+
+        }
+
+    }
+
+    private void atualizarProduto() {
+
+        if (idProdutoSelecionado == null) {
+
+            JOptionPane.showMessageDialog(this,
+                    "Selecione um produto na tabela.");
+
+            return;
+
+        }
+
+        try {
+
+            Produto produto = new Produto();
+
+            produto.setId(idProdutoSelecionado);
+
+            produto.setNome(txtNome.getText());
+            produto.setDescricao(txtDescricao.getText());
+            produto.setTipo((TipoProduto) cbTipo.getSelectedItem());
+
+            String valor = txtValor.getText().replace(",", ".");
+            produto.setValor(Double.parseDouble(valor));
+
+            produto.setQuantidade(Integer.parseInt(txtQuantidade.getText()));
+            produto.setEstoqueMinimo(Integer.parseInt(txtEstoqueMinimo.getText()));
+            produto.setPrateleira(Integer.parseInt(txtPrateleira.getText()));
+            produto.setColuna(Integer.parseInt(txtColuna.getText()));
+            produto.setPalavrasChave(txtPalavrasChave.getText());
+
+            ProdutoDAO dao = new ProdutoDAO();
+
+            dao.atualizar(produto);
+
+            carregarProdutos();
+
+            limparCampos();
+
+            idProdutoSelecionado = null;
+
+            JOptionPane.showMessageDialog(this,
+                    "Produto atualizado com sucesso!");
+
+        } catch (Exception e) {
+
+            JOptionPane.showMessageDialog(this,
+                    "Erro ao atualizar produto.");
 
             e.printStackTrace();
 
@@ -265,6 +320,8 @@ public class CadastroProdutoPanel extends JPanel {
         txtPrateleira.setText(String.valueOf(produto.getPrateleira()));
         txtColuna.setText(String.valueOf(produto.getColuna()));
         txtPalavrasChave.setText(produto.getPalavrasChave());
+
+        tabelaProdutos.clearSelection();
 
     }
 
